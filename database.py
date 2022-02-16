@@ -46,3 +46,8 @@ class Database:
                and currentUser.password == _user.password):
                 verifiedUser = True
         return verifiedUser
+
+
+
+
+
