@@ -1,14 +1,13 @@
-class User:
+from Credential import Credential
 
-    ADMIN_TYPE = "Administrator"
-    COMMON_TYPE = "Common"
-    email = ""
-    password = ""
-    userType = ""
+
+class User(Credential):
 
     def __init__(self, _email, _password):
-        self.email = _email
-        self.password = _password
+
+        super().__init__(_email, _password)
+        self.ADMIN_TYPE = "Administrator"
+        self.COMMON_TYPE = "Common"
         self.userType = self.COMMON_TYPE
 
     def getUser(self):

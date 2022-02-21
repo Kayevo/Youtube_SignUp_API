@@ -18,20 +18,20 @@ class Database:
             stringUserTable += currentUser.getUser()
         return stringUserTable
 
-    def findUser(self, _user):
+    def findUser(self, _userCredentials):
         foundUser = User.User("", "")
 
         for currentUser in self.userTable:
-            if(currentUser.email == _user.email
-               and currentUser.password == _user.password):
+            if(currentUser.email == _userCredentials.email
+               and currentUser.password == _userCredentials.password):
                 foundUser = currentUser
         return foundUser
 
-    def existsUser(self, _user):
+    def existsUser(self, _userCredentials):
         existsUser = False
 
         for currentUser in self.userTable:
-            if(currentUser.email == _user.email
-               and currentUser.password == _user.password):
+            if(currentUser.email == _userCredentials.email
+               and currentUser.password == _userCredentials.password):
                 existsUser = True
         return existsUser
