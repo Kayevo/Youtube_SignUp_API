@@ -19,20 +19,29 @@ class Database:
         return stringUserTable
 
     def findUser(self, _user):
-        foundUser = False
+        foundUser = User.User("", "")
 
         for currentUser in self.userTable:
             if(currentUser.email == _user.email
                and currentUser.password == _user.password):
-                foundUser = True
+                foundUser = currentUser
         return foundUser
 
-    def verifyAdminUser(self, _user):
-        verifiedAdminUser = False
+    def existsUser(self, _user):
+        existsUser = False
 
         for currentUser in self.userTable:
             if(currentUser.email == _user.email
-               and currentUser.password == _user.password
-               and currentUser.userType == User.User.ADMIN_TYPE):
-                verifiedAdminUser = True
-        return verifiedAdminUser
+               and currentUser.password == _user.password):
+                existsUser = True
+        return existsUser
+
+    # def verifyAdminUser(self, _user):
+    #     verifiedAdminUser = False
+
+    #     for currentUser in self.userTable:
+    #         if(currentUser.email == _user.email
+    #            and currentUser.password == _user.password
+    #            and currentUser.userType == User.User.ADMIN_TYPE):
+    #             verifiedAdminUser = True
+    #     return verifiedAdminUser
