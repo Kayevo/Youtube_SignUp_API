@@ -35,13 +35,3 @@ class Database:
                and currentUser.password == _user.password):
                 existsUser = True
         return existsUser
-
-    # def verifyAdminUser(self, _user):
-    #     verifiedAdminUser = False
-
-    #     for currentUser in self.userTable:
-    #         if(currentUser.email == _user.email
-    #            and currentUser.password == _user.password
-    #            and currentUser.userType == User.User.ADMIN_TYPE):
-    #             verifiedAdminUser = True
-    #     return verifiedAdminUser

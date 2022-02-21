@@ -13,16 +13,6 @@ def test():
     userTable = ""
     _user = User.User(body["email"], body["password"])
 
-    # verified = youtubeDatabase.findUser(_user)
-    # userIsAdmin = youtubeDatabase.verifyAdminUser(_user)
-
-    existsUser = youtubeDatabase.existsUser(_user)
-    currentUser = youtubeDatabase.findUser(_user)
-
-    # if(youtubeDatabase.findUser(_user)
-    #    and youtubeDatabase.verifyAdminUser(_user)):
-    #     userTable = youtubeDatabase.getUserTable()
-
     if(youtubeDatabase.existsUser(_user)):
         youtubeUser = youtubeDatabase.findUser(_user)
 
