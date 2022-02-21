@@ -1,38 +1,42 @@
-import database
+import Database
+import User
 from flask import Flask, request
 
 app = Flask("YouTube")
-youtubeDatabase = database.Database()
+youtubeDatabase = Database.Database()
 
 
-@app.route("/users/database", methods=["GET"])
+@app.route("/user/table", methods=["GET"])
 def test():
     body = request.get_json()
-    return youtubeDatabase.getUserTable()
+
+    userTable = ""
+    _user = User.User(body["email"], body["password"])
+
+    verified = youtubeDatabase.findUser(_user)
+    userIsAdmin = youtubeDatabase.verifyAdminUser(_user)
+
+    if(youtubeDatabase.findUser(_user)
+       and youtubeDatabase.verifyAdminUser(_user)):
+        userTable = youtubeDatabase.getUserTable()
+
+    return userTable
 
 
-@app.route("/signup/user", methods=["POST"])
+@app.route("/user/signup", methods=["POST"])
 def userSignUp():
     body = request.get_json()
 
-    youtubeUser = database.User(body["email"], body["password"])
-    youtubeDatabase.addUser(youtubeUser)
+    youtubeUser = User.User(body["email"], body["password"])
 
-    #(body["email"], body["password"], localDatabase)
+    if(body["adminUser"] == True):
+        youtubeUser.setAdminUser()
+    else:
+        youtubeUser.setCommonUser()
+
+    youtubeDatabase.addUser(youtubeUser)
 
     return youtubeUser.getUser()
 
 
-@app.route("/signup/adminuser", methods=["POST"])
-def adminUserSignUp():
-    body = request.get_json()
-
-    youtubeUser = database.User(body["email"], body["password"])
-    youtubeDatabase.addUser(youtubeUser)
-
-    #(body["email"], body["password"], localDatabase)
-
-    return youtubeUser.getUser()
-
-
-app.run()
+app.run(debug=False)

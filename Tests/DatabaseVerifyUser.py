@@ -1,18 +1,23 @@
-import database
+import sys
+sys.path.append( './' )
+import Database
+import User
 
 # Verify user method test
-localDatabase = database.Database()
+localDatabase = Database.Database()
 
-userOne = database.User("email@1.com", "pass1")
+userOne = User.User("email@1.com", "pass1")
 
 test1 = localDatabase.verifyUser(userOne)
 
 localDatabase.addUser(userOne)
 
-userTwo = database.User("email@2.com", "pass2")
+userTwo = User.User("email@2.com", "pass2")
 localDatabase.addUser(userTwo)
 
 test2 = localDatabase.verifyUser(userTwo)
 
 print(test1)
 print(test2)
+
+

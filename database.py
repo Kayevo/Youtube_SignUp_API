@@ -1,29 +1,9 @@
-from typing import List
-
-from click import password_option
-
-
-class User:
-
-    email = ""
-    password = ""
-
-    def __init__(self, _email, _password):
-        self.email = _email
-        self.password = _password
-
-    def getUser(self):
-        stringUser = ""
-
-        stringUser += "E-mail: " + self.email + "\n"
-        stringUser += "Password: " + self.password + "\n\n"
-        return stringUser
+import User
 
 
 class Database:
 
     userTable = list()
-    adminUserTable = list()
 
     def __init__(self):
         self.userTable = list()
@@ -38,16 +18,21 @@ class Database:
             stringUserTable += currentUser.getUser()
         return stringUserTable
 
-    def verifyUser(self, _user):
-        verifiedUser = False
+    def findUser(self, _user):
+        foundUser = False
 
         for currentUser in self.userTable:
             if(currentUser.email == _user.email
                and currentUser.password == _user.password):
-                verifiedUser = True
-        return verifiedUser
+                foundUser = True
+        return foundUser
 
+    def verifyAdminUser(self, _user):
+        verifiedAdminUser = False
 
-
-
-
+        for currentUser in self.userTable:
+            if(currentUser.email == _user.email
+               and currentUser.password == _user.password
+               and currentUser.userType == User.User.ADMIN_TYPE):
+                verifiedAdminUser = True
+        return verifiedAdminUser
