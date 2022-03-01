@@ -1,16 +1,17 @@
 import Database
 import User
 import Credential
+import json
 from flask import Flask, request
 
 youtubeApp = Flask("YouTube")
 database = Database.Database()
 
 
-@youtubeApp.route("/user/table", methods=["GET"])
+@youtubeApp.route("/user/table", methods=["POST"])
 def userTable():
     bodyJson = request.get_json()
-    bodyData = request.get_data()
+    bodyData = json.loads(request.get_data())
 
     if(bodyJson):
         userCredentials = Credential.Credential(
@@ -40,7 +41,7 @@ def getUserTable(_userCredentials):
 @youtubeApp.route("/user/signup", methods=["POST"])
 def userSignUp():
     bodyJson = request.get_json()
-    bodyData = request.get_data()
+    bodyData = json.loads(request.get_data())
     isAdminUser = False
 
     if(bodyJson):
@@ -71,4 +72,4 @@ def addUserOnDabase(_userCredentials, _isAdmin):
     return user.getUser()
 
 
-youtubeApp.run(debug = True)
+youtubeApp.run(debug=True)
