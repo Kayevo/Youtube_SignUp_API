@@ -1,8 +1,10 @@
+from email import message
+from urllib import response
 import Database
 import User
 import Credential
 import json
-from flask import Flask, request
+from flask import Flask, make_response, request
 
 youtubeApp = Flask("YouTube")
 database = Database.Database()
@@ -12,6 +14,9 @@ database = Database.Database()
 def userTable():
     bodyJson = request.get_json()
     bodyData = json.loads(request.get_data())
+    message = ""
+    status = 500
+    response = make_response(message, status)
 
     if(bodyJson):
         userCredentials = Credential.Credential(
@@ -21,21 +26,32 @@ def userTable():
             bodyData["email"], bodyData["password"])
 
     if(userCredentials):
-        userTable = getUserTable(userCredentials)
+        response = getUserTable(userCredentials)
 
-    return userTable
+    return response
 
 
 def getUserTable(_userCredentials):
-    userTable = ""
+    message = ""
+    status = 500
+    response = make_response(message, status)
 
     if(database.existsUser(_userCredentials)):
         youtubeUser = database.findUser(_userCredentials)
 
         if(youtubeUser.verifyAdminUser()):
-            userTable = json.dumps(database.getUserTable())
+            message = json.dumps(database.getUserTable())
+            status = 200
+        else:
+            message = "User dont have access"
+            status = 401
+    else:
+        message = "User not exist"
+        status = 401
 
-    return userTable
+    response = make_response(message, status)
+
+    return response
 
 
 @youtubeApp.route("/user/signup", methods=["POST"])
@@ -43,6 +59,8 @@ def userSignUp():
     bodyJson = request.get_json()
     bodyData = json.loads(request.get_data())
     isAdminUser = False
+    message = ""
+    status = 500
 
     if(bodyJson):
         userCredentials = Credential.Credential(
@@ -53,9 +71,16 @@ def userSignUp():
             bodyData["email"], bodyData["password"])
         isAdminUser = bodyData["isAdminUser"]
 
-    user = addUserOnDabase(userCredentials, isAdminUser)
+    if(database.existsUser(userCredentials)):
+        message = "User already exist."
+        status = 406
+    else:
+        user = addUserOnDabase(userCredentials, isAdminUser)
+        message = user
+        status = 200
 
-    return user
+    response = make_response(message, status)
+    return response
 
 
 def addUserOnDabase(_userCredentials, _isAdmin):
