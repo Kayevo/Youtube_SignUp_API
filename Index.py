@@ -33,7 +33,7 @@ def getUserTable(_userCredentials):
         youtubeUser = database.findUser(_userCredentials)
 
         if(youtubeUser.verifyAdminUser()):
-            userTable = database.getUserTable()
+            userTable = json.dumps(database.getUserTable())
 
     return userTable
 
@@ -61,15 +61,16 @@ def userSignUp():
 def addUserOnDabase(_userCredentials, _isAdmin):
 
     user = User.User(_userCredentials.email, _userCredentials.password)
+    userJson = {}
 
     if(_isAdmin):
         user.setAdminUser()
     else:
         user.setCommonUser()
 
-    database.addUser(user)
+    userJson = database.addUser(user)
 
-    return user.getUser()
+    return userJson
 
 
 youtubeApp.run(debug=True)

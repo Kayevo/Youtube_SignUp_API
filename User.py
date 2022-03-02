@@ -1,7 +1,10 @@
 from Credential import Credential
+import json
 
 
 class User(Credential):
+
+    userType = ""
 
     def __init__(self, _email, _password):
 
@@ -10,13 +13,9 @@ class User(Credential):
         self.COMMON_TYPE = "Common"
         self.userType = self.COMMON_TYPE
 
-    def getUser(self):
-        stringUser = ""
-
-        stringUser += "E-mail: " + self.email + "\n"
-        stringUser += "Password: " + self.password + "\n"
-        stringUser += "Type: " + self.userType + "\n\n"
-        return stringUser
+    def parseToJson(self):
+        userJson = json.loads(json.dumps(self.__dict__))
+        return userJson
 
     def setAdminUser(self):
         self.userType = self.ADMIN_TYPE
